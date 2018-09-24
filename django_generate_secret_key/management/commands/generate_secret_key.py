@@ -24,6 +24,12 @@ class Command(BaseCommand):
             default=False,
             help='Replace the existing key'
         )
+        parser.add_argument(
+            'filename',
+            default='secretkey.txt',
+            nargs='?',
+            help='Secret file name'
+        )
 
     def handle(self, *args, **options):
 
@@ -31,8 +37,7 @@ class Command(BaseCommand):
             self.stderr.write("Please provide only one file name (or none).")
             return
 
-        key_filename = args[0] if args else 'secretkey.txt'
-        key_filepath = os.path.join(self.BASE_DIR, key_filename)
+        key_filepath = os.path.join(self.BASE_DIR, options['filename'])
 
         try:
             existing_key = open(key_filepath).read().strip()
